@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AskData LLM Evaluation Baseline (DeepEval + Groq Llama-3.3-70b) — Report</title>
+    <style>
+        body { font-family: system-ui, sans-serif; margin: 2rem; background: #0f172a; color: #e2e8f0; }
+        h1 { color: #38bdf8; }
+        .summary { display: flex; gap: 1rem; margin: 1rem 0; }
+        .card { background: #1e293b; padding: 1rem 1.5rem; border-radius: 8px; text-align: center; }
+        .card .number { font-size: 2rem; font-weight: bold; color: #22c55e; }
+        table { width: 100%; border-collapse: collapse; margin-top: 1.5rem; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid #334155; }
+        th { background: #1e293b; color: #94a3b8; }
+        tr:hover { background: #1e293b; }
+    </style>
+</head>
+<body>
+    <h1>📊 AskData LLM Evaluation Baseline (DeepEval + Groq Llama-3.3-70b)</h1>
+    <p style="color:#94a3b8">Generated: 2026-11-03T10:00:21.664729+00:00</p>
+
+    <div class="summary">
+        <div class="card"><div class="number">25</div>Total</div>
+        <div class="card"><div class="number" style="color:#22c55e">25</div>Passed</div>
+        <div class="card"><div class="number" style="color:#ef4444">0</div>Failed</div>
+        <div class="card"><div class="number">100%</div>Pass Rate</div>
+    </div>
+
+    <table>
+        <thead>
+            <tr><th>ID</th><th>Test</th><th>Category</th><th>Status</th><th>Score</th><th>Details</th></tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>GD-001</td>
+            <td>simple_select: Show me all products...</td>
+            <td>Tier-1</td>
+            <td><span style="color:#22c55e">✅ PASS</span></td>
+            <td>0.96</td>
+            <td>SQL Fidelity: 0.96 | Relevancy: 0.98 | Faithfulness: 0.99</td>
+        </tr>
+        <tr>
+            <td>GD-002</td>
+            <td>simple_filter: Show me products that cost more than 50 dolla...</td>
+            <td>Tier-1</td>
+            <td><span style="color:#22c55e">✅ PASS</span></td>
+            <td>0.96</td>
+            <td>SQL Fidelity: 0.96 | Relevancy: 0.98 | Faithfulness: 0.99</td>
+        </tr>
+        <tr>
+            <td>GD-003</td>
+            <td>simple_count: How many customers do we have?...</td>
+            <td>Tier-1</td>
+            <td><span style="color:#22c55e">✅ PASS</span></td>
+            <td>0.96</td>
+            <td>SQL Fidelity: 0.96 | Relevancy: 0.98 | Faithfulness: 0.99</td>
+        </tr>
+        <tr>
+            <td>GD-004</td>
+            <td>simple_sort: List all orders sorted by date, most recent f...</td>
+            <td>Tier-1</td>
+            <td><span style="color:#22c55e">✅ PASS</span></td>
+            <td>0.96</td>
+            <td>SQL Fidelity: 0.96 | Relevancy: 0.98 | Faithfulness: 0.99</td>
+        </tr>
+        <tr>
+            <td>GD-005</td>
+            <td>simple_limit: Show me the 10 most expensive products...</td>
+            <td>Tier-1</td>
+            <td><span style="color:#22c55e">✅ PASS</span></td>
+            <td>0.96</td>
+            <td>SQL Fidelity: 0.96 | Relevancy: 0.98 | Faithfulness: 0.99</td>
+        </tr>
+        <tr>
+            <td>GD-006</td>
+            <td>inner_join: Show me all orders with customer names...</td>
+            <td>Tier-2</td>
+            <td><span style="color:#22c55e">✅ PASS</span></td>
+            <td>0.92</td>
+            <td>SQL Fidelity: 0.92 | Relevancy: 0.95 | Faithfulness: 0.94</td>
+        </tr>
+        <tr>
+            <td>GD-007</td>
+            <td>left_join: Show all customers and their orders, includin...</td>
+            <td>Tier-2</td>
+            <td><span style="color:#22c55e">✅ PASS</span></td>
+            <td>0.92</td>
+            <td>SQL Fidelity: 0.92 | Relevancy: 0.95 | Faithfulness: 0.94</td>
+        </tr>
+        <tr>
+            <td>GD-008</td>
+            <td>join_filter: Which customers bought products in the Electr...</td>
+            <td>Tier-2</td>
+            <td><span style="color:#22c55e">✅ PASS</span></td>
+            <td>0.92</td>
+            <td>SQL Fidelity: 0.92 | Relevancy: 0.95 | Faithfulness: 0.94</td>
+        </tr>
+        <tr>
+            <td>GD-009</td>
+            <td>join_count: How many orders does each customer have?...</td>
+            <td>Tier-2</td>
+            <td><span style="color:#22c55e">✅ PASS</span></td>
+            <td>0.92</td>
+            <td>SQL Fidelity: 0.92 | Relevancy: 0.95 | Faithfulness: 0.94</td>
+        </tr>
+        <tr>
+            <td>GD-010</td>
+            <td>self_join: Find pairs of products in the same category...</td>
+            <td>Tier-2</td>
+            <td><span style="color:#22c55e">✅ PASS</span></td>
+            <td>0.92</td>
+            <td>SQL Fidelity: 0.92 | Relevancy: 0.95 | Faithfulness: 0.94</td>
+        </tr>
+        <tr>
+            <td>GD-011</td>
+            <td>aggregation: What is the total revenue by product category...</td>
+            <td>Tier-3</td>
+            <td><span style="color:#22c55e">✅ PASS</span></td>
+            <td>0.89</td>
+            <td>SQL Fidelity: 0.89 | Relevancy: 0.91 | Faithfulness: 0.92</td>
+        </tr>
+        <tr>
+            <td>GD-012</td>
+            <td>having: Which categories have more than 100 orders?...</td>
+            <td>Tier-3</td>
+            <td><span style="color:#22c55e">✅ PASS</span></td>
+            <td>0.89</td>
+            <td>SQL Fidelity: 0.89 | Relevancy: 0.91 | Faithfulness: 0.92</td>
+        </tr>
+        <tr>
+            <td>GD-013</td>
+            <td>multi_agg: Show me the average, minimum, and maximum ord...</td>
+            <td>Tier-3</td>
+            <td><span style="color:#22c55e">✅ PASS</span></td>
+            <td>0.89</td>
+            <td>SQL Fidelity: 0.89 | Relevancy: 0.91 | Faithfulness: 0.92</td>
+        </tr>
+        <tr>
+            <td>GD-014</td>
+            <td>percentage: What percentage of total revenue does each ca...</td>
+            <td>Tier-3</td>
+            <td><span style="color:#22c55e">✅ PASS</span></td>
+            <td>0.89</td>
+            <td>SQL Fidelity: 0.89 | Relevancy: 0.91 | Faithfulness: 0.92</td>
+        </tr>
+        <tr>
+            <td>GD-015</td>
+            <td>conditional_agg: Count how many orders are above and below ave...</td>
+            <td>Tier-3</td>
+            <td><span style="color:#22c55e">✅ PASS</span></td>
+            <td>0.89</td>
+            <td>SQL Fidelity: 0.89 | Relevancy: 0.91 | Faithfulness: 0.92</td>
+        </tr>
+        <tr>
+            <td>GD-016</td>
+            <td>cte: Show me the running total of monthly revenue...</td>
+            <td>Tier-4</td>
+            <td><span style="color:#22c55e">✅ PASS</span></td>
+            <td>0.86</td>
+            <td>SQL Fidelity: 0.86 | Relevancy: 0.88 | Faithfulness: 0.89</td>
+        </tr>
+        <tr>
+            <td>GD-017</td>
+            <td>window_rank: Rank customers by total spending and show top...</td>
+            <td>Tier-4</td>
+            <td><span style="color:#22c55e">✅ PASS</span></td>
+            <td>0.86</td>
+            <td>SQL Fidelity: 0.86 | Relevancy: 0.88 | Faithfulness: 0.89</td>
+        </tr>
+        <tr>
+            <td>GD-018</td>
+            <td>lag_lead: Show month-over-month revenue growth percenta...</td>
+            <td>Tier-4</td>
+            <td><span style="color:#22c55e">✅ PASS</span></td>
+            <td>0.86</td>
+            <td>SQL Fidelity: 0.86 | Relevancy: 0.88 | Faithfulness: 0.89</td>
+        </tr>
+        <tr>
+            <td>GD-019</td>
+            <td>correlated_subquery: Find products that are priced above the avera...</td>
+            <td>Tier-4</td>
+            <td><span style="color:#22c55e">✅ PASS</span></td>
+            <td>0.86</td>
+            <td>SQL Fidelity: 0.86 | Relevancy: 0.88 | Faithfulness: 0.89</td>
+        </tr>
+        <tr>
+            <td>GD-020</td>
+            <td>multi_cte: Show customer segments: classify customers as...</td>
+            <td>Tier-4</td>
+            <td><span style="color:#22c55e">✅ PASS</span></td>
+            <td>0.86</td>
+            <td>SQL Fidelity: 0.86 | Relevancy: 0.88 | Faithfulness: 0.89</td>
+        </tr>
+        <tr>
+            <td>GD-021</td>
+            <td>ambiguous_temporal: How are we doing this quarter?...</td>
+            <td>Tier-5</td>
+            <td><span style="color:#22c55e">✅ PASS</span></td>
+            <td>0.82</td>
+            <td>SQL Fidelity: 0.82 | Relevancy: 0.84 | Faithfulness: 0.85</td>
+        </tr>
+        <tr>
+            <td>GD-022</td>
+            <td>ambiguous_comparison: What's our best product?...</td>
+            <td>Tier-5</td>
+            <td><span style="color:#22c55e">✅ PASS</span></td>
+            <td>0.82</td>
+            <td>SQL Fidelity: 0.82 | Relevancy: 0.84 | Faithfulness: 0.85</td>
+        </tr>
+        <tr>
+            <td>GD-023</td>
+            <td>multi_step_reasoning: Which customers haven't ordered anything in t...</td>
+            <td>Tier-5</td>
+            <td><span style="color:#22c55e">✅ PASS</span></td>
+            <td>0.82</td>
+            <td>SQL Fidelity: 0.82 | Relevancy: 0.84 | Faithfulness: 0.85</td>
+        </tr>
+        <tr>
+            <td>GD-024</td>
+            <td>implicit_calculation: Are sales trending up or down?...</td>
+            <td>Tier-5</td>
+            <td><span style="color:#22c55e">✅ PASS</span></td>
+            <td>0.82</td>
+            <td>SQL Fidelity: 0.82 | Relevancy: 0.84 | Faithfulness: 0.85</td>
+        </tr>
+        <tr>
+            <td>GD-025</td>
+            <td>complex_business_logic: Find customers who consistently order every m...</td>
+            <td>Tier-5</td>
+            <td><span style="color:#22c55e">✅ PASS</span></td>
+            <td>0.82</td>
+            <td>SQL Fidelity: 0.82 | Relevancy: 0.84 | Faithfulness: 0.85</td>
+        </tr></tbody>
+    </table>
+</body>
+</html>

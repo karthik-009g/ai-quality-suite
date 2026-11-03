@@ -21,15 +21,15 @@ env/
 .env.local
 .env.*.local
 
-# --- Test Artifacts ---
-reports/deepeval/
-reports/playwright/
-reports/allure/
-reports/allure-results/
+# --- Test Artifacts (transient) ---
 .pytest_cache/
 htmlcov/
 .coverage
 coverage.xml
+test-results/
+playwright-report/
+state.json
+*.trace.zip
 
 # --- Playwright ---
 test-results/
