@@ -85,10 +85,7 @@ class TestBoundaryConditions:
         response = await askdata_client.submit_query("显示所有产品 — Zeige alle Produkte 🛍️")
         assert response.status_code != 500, "Server returned 500 on Unicode query"
 
-    async def test_missing_messages_field(self, api_client):
+    async def test_missing_messages_field(self, askdata_client):
         """Payload without 'messages' field should be handled."""
-        response = await api_client.post(
-            "/api/chat",
-            json={"query": "Show me products"},  # Wrong field name
-        )
+        response = await askdata_client.submit_query_raw(payload={"query": "Show me products"})
         assert response.status_code != 500, "Server returned 500 on missing messages field"
