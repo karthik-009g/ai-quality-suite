@@ -8,8 +8,6 @@ Test count: 8
 """
 
 import pytest
-import httpx
-
 
 pytestmark = [pytest.mark.api]
 
@@ -24,9 +22,7 @@ class TestHealthCheck:
     async def test_app_is_reachable(self, askdata_client):
         """The AskData app should respond to GET /."""
         response = await askdata_client.health_check()
-        assert response.status_code == 200, (
-            f"App not reachable: {response.status_code}"
-        )
+        assert response.status_code == 200, f"App not reachable: {response.status_code}"
 
     @pytest.mark.smoke
     async def test_app_returns_html(self, askdata_client):
@@ -34,9 +30,7 @@ class TestHealthCheck:
         response = await askdata_client.get_page("/")
         assert response.status_code == 200
         content_type = response.headers.get("content-type", "")
-        assert "text/html" in content_type, (
-            f"Expected HTML, got: {content_type}"
-        )
+        assert "text/html" in content_type, f"Expected HTML, got: {content_type}"
 
 
 # ---------------------------------------------------------------------------
@@ -47,9 +41,7 @@ class TestQuerySubmission:
 
     async def test_valid_query_returns_response(self, askdata_client):
         """A valid NL query should return a successful response or auth challenge."""
-        response = await askdata_client.submit_query(
-            "How many customers do we have?"
-        )
+        response = await askdata_client.submit_query("How many customers do we have?")
         # Accept 200/201 (authorized/mock) or 401 (governed enterprise auth challenge)
         assert response.status_code in (200, 201, 401), (
             f"Expected 2xx or 401 auth challenge, got: {response.status_code}"
@@ -57,17 +49,18 @@ class TestQuerySubmission:
 
     async def test_query_response_has_content(self, askdata_client):
         """The response body should not be empty."""
-        response = await askdata_client.submit_query(
-            "Show me all products"
-        )
+        response = await askdata_client.submit_query("Show me all products")
         assert response.status_code in (200, 201, 401)
         assert len(response.content) > 0, "Response body is empty"
 
-    @pytest.mark.parametrize("query", [
-        "What is the total revenue?",
-        "Show me the top 5 products",
-        "How many orders were placed?",
-    ])
+    @pytest.mark.parametrize(
+        "query",
+        [
+            "What is the total revenue?",
+            "Show me the top 5 products",
+            "How many orders were placed?",
+        ],
+    )
     async def test_multiple_valid_queries(self, askdata_client, query):
         """Multiple different valid queries should be processed or properly challenged."""
         response = await askdata_client.submit_query(query)
@@ -84,9 +77,7 @@ class TestResponseStructure:
 
     async def test_response_is_valid_format(self, askdata_client):
         """Response should be valid JSON or structured text."""
-        response = await askdata_client.submit_query(
-            "Count all products"
-        )
+        response = await askdata_client.submit_query("Count all products")
         assert response.status_code in (200, 201, 401)
         content_type = response.headers.get("content-type", "")
         valid_types = ["application/json", "text/plain", "text/event-stream"]
@@ -96,9 +87,7 @@ class TestResponseStructure:
 
     async def test_response_contains_sql_like_content(self, askdata_client):
         """The response should return SQL execution or governed auth detail."""
-        response = await askdata_client.submit_query(
-            "Show me all products"
-        )
+        response = await askdata_client.submit_query("Show me all products")
         assert response.status_code in (200, 201, 401)
         body = response.text.lower()
         if response.status_code in (200, 201):

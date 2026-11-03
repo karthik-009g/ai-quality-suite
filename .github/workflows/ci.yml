@@ -9,7 +9,7 @@ on:
 env:
   PYTHON_VERSION: "3.11"
   ASKDATA_BASE_URL: "https://ask-data-gilt.vercel.app"
-  ASKDATA_API_URL: "https://ask-data-gilt.vercel.app/api"
+  ASKDATA_API_URL: "https://ask-data-gilt.vercel.app"
 
 jobs:
   lint:

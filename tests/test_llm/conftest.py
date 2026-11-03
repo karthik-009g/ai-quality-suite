@@ -7,18 +7,20 @@ and the Groq judge instance.
 """
 
 import pytest
-
 from deepeval.metrics import (
     AnswerRelevancyMetric,
     FaithfulnessMetric,
+    GEval,
     HallucinationMetric,
     ToxicityMetric,
-    GEval,
 )
+
 try:
-    from deepeval.test_case import LLMTestCase, SingleTurnParams as LLMParams
+    from deepeval.test_case import LLMTestCase
+    from deepeval.test_case import SingleTurnParams as LLMParams
 except ImportError:
-    from deepeval.test_case import LLMTestCase, LLMTestCaseParams as LLMParams
+    from deepeval.test_case import LLMTestCase
+    from deepeval.test_case import LLMTestCaseParams as LLMParams
 
 
 @pytest.fixture(scope="session")

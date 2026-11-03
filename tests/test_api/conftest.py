@@ -24,9 +24,7 @@ def valid_query_payload():
     """A known-good query payload for positive tests."""
     return {
         "query": "Show me all products",
-        "messages": [
-            {"role": "user", "content": "Show me all products"}
-        ]
+        "messages": [{"role": "user", "content": "Show me all products"}],
     }
 
 

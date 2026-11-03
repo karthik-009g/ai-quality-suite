@@ -14,7 +14,6 @@ from playwright.sync_api import Page
 from tests.test_e2e.pages.query_page import QueryPage
 from tests.test_e2e.pages.results_page import ResultsPage
 
-
 pytestmark = [pytest.mark.e2e]
 
 
@@ -46,14 +45,16 @@ class TestErrorHandling:
 class TestResponsiveLayout:
     """Verify the app works across different viewport sizes."""
 
-    @pytest.mark.parametrize("width,height,label", [
-        (375, 667, "mobile"),
-        (768, 1024, "tablet"),
-        (1920, 1080, "desktop"),
-    ], ids=["mobile", "tablet", "desktop"])
-    def test_app_renders_at_viewport(
-        self, page: Page, askdata_base_url, width, height, label
-    ):
+    @pytest.mark.parametrize(
+        ("width", "height", "label"),
+        [
+            (375, 667, "mobile"),
+            (768, 1024, "tablet"),
+            (1920, 1080, "desktop"),
+        ],
+        ids=["mobile", "tablet", "desktop"],
+    )
+    def test_app_renders_at_viewport(self, page: Page, askdata_base_url, width, height, label):
         """The app should render without errors at different viewport sizes."""
         page.set_viewport_size({"width": width, "height": height})
         page.goto(askdata_base_url)
@@ -84,7 +85,5 @@ class TestMultiQuerySession:
             query_page.submit_query(query)
             results_page.wait_for_response(timeout=45000)
 
-            assert results_page.has_response(), (
-                f"No response for query: {query}"
-            )
+            assert results_page.has_response(), f"No response for query: {query}"
             results_page.assert_no_raw_error()

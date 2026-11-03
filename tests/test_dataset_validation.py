@@ -7,16 +7,14 @@ contain valid SQL syntax, valid categories, and load properly.
 
 import json
 from pathlib import Path
-import pytest
+
 import jsonschema
+import pytest
 import sqlparse
 
 from askdata_quality.utils.dataset_loader import (
-    load_all_golden_cases,
-    load_golden_cases,
-    get_cases_by_tier,
-    get_cases_by_category,
     get_case_by_id,
+    get_cases_by_tier,
 )
 
 

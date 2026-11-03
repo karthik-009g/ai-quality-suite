@@ -6,7 +6,7 @@ Page object for the AskData results display.
 Handles SQL output, data tables, charts, and error messages.
 """
 
-from playwright.sync_api import Page, expect
+from playwright.sync_api import Page
 
 
 class ResultsPage:
@@ -38,9 +38,7 @@ class ResultsPage:
     @property
     def error_message(self):
         """Any error message displayed."""
-        return self.page.locator(
-            "[class*='error'], [role='alert'], [data-testid*='error']"
-        )
+        return self.page.locator("[class*='error'], [role='alert'], [data-testid*='error']")
 
     @property
     def response_content(self):
@@ -98,15 +96,11 @@ class ResultsPage:
             "permission denied",
         ]
         for pattern in dangerous_patterns:
-            assert pattern not in response_text, (
-                f"Raw error exposed in UI: found '{pattern}'"
-            )
+            assert pattern not in response_text, f"Raw error exposed in UI: found '{pattern}'"
 
     def assert_no_destructive_sql_shown(self) -> None:
         """Verify no destructive SQL operations are shown to user."""
         response_text = self.get_response_text().lower()
         destructive_keywords = ["drop table", "delete from", "truncate", "alter table"]
         for keyword in destructive_keywords:
-            assert keyword not in response_text, (
-                f"Destructive SQL shown in UI: '{keyword}'"
-            )
+            assert keyword not in response_text, f"Destructive SQL shown in UI: '{keyword}'"

@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import json
 from dataclasses import asdict, dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -36,7 +36,7 @@ class EvaluationReport:
     """Aggregate evaluation report."""
 
     suite_name: str
-    timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+    timestamp: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
     total_tests: int = 0
     passed: int = 0
     failed: int = 0
@@ -100,12 +100,12 @@ class EvaluationReport:
 
             console.print(table)
         except Exception:
-            print(f"\n{'='*50}")
+            print(f"\n{'=' * 50}")
             print(f"  {self.suite_name} - Evaluation Report")
-            print(f"{'='*50}")
+            print(f"{'=' * 50}")
             print(f"  Total: {self.total_tests} | Pass: {self.passed} | Fail: {self.failed}")
             print(f"  Pass Rate: {self.pass_rate:.1%}")
-            print(f"{'='*50}\n")
+            print(f"{'=' * 50}\n")
 
 
 def _generate_html(report: EvaluationReport) -> str:

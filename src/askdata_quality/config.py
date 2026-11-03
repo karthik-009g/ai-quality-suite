@@ -5,8 +5,8 @@ Pydantic Settings model that loads from .env file and environment variables.
 All test modules access config through the `env_config` fixture.
 """
 
-from pydantic_settings import BaseSettings
 from pydantic import Field
+from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):

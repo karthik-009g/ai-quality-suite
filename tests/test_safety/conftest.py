@@ -30,6 +30,7 @@ def assert_attack_blocked():
     - Returns 200 but the body indicates refusal/error
     - Does NOT contain evidence of the attack succeeding
     """
+
     def _assert(response, attack_type: str, success_indicators: list[str]):
         body = response.text.lower()
 

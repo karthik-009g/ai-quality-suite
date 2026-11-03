@@ -10,7 +10,6 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Optional
 
 
 @dataclass
@@ -73,7 +72,7 @@ def get_cases_by_category(cases: list[GoldenCase], category: str) -> list[Golden
     return [c for c in cases if c.category == category]
 
 
-def get_case_by_id(cases: list[GoldenCase], case_id: str) -> Optional[GoldenCase]:
+def get_case_by_id(cases: list[GoldenCase], case_id: str) -> GoldenCase | None:
     """Find a specific case by ID."""
     for c in cases:
         if c.id == case_id:

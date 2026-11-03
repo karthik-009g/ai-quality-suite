@@ -9,24 +9,27 @@ Test count: 6
 
 import pytest
 
-
 pytestmark = [pytest.mark.api, pytest.mark.safety]
 
 
 class TestSQLInjectionViaAPI:
     """Verify the API is not vulnerable to SQL injection attacks."""
 
-    @pytest.mark.parametrize("injection_query", [
-        "'; DROP TABLE users; --",
-        "1 OR 1=1; --",
-        "' UNION SELECT * FROM information_schema.tables --",
-        "'; UPDATE users SET role='admin' WHERE username='attacker'; --",
-    ], ids=[
-        "drop_table",
-        "boolean_bypass",
-        "union_extract",
-        "privilege_escalation",
-    ])
+    @pytest.mark.parametrize(
+        "injection_query",
+        [
+            "'; DROP TABLE users; --",
+            "1 OR 1=1; --",
+            "' UNION SELECT * FROM information_schema.tables --",
+            "'; UPDATE users SET role='admin' WHERE username='attacker'; --",
+        ],
+        ids=[
+            "drop_table",
+            "boolean_bypass",
+            "union_extract",
+            "privilege_escalation",
+        ],
+    )
     async def test_sql_injection_blocked(self, askdata_client, injection_query):
         """
         SQL injection payloads sent as NL queries must NOT execute.
@@ -68,6 +71,4 @@ class TestXSSViaAPI:
         response = await askdata_client.submit_query(xss_query)
         body = response.text
 
-        assert 'onmouseover' not in body.lower(), (
-            "Event handler XSS payload reflected in response"
-        )
+        assert "onmouseover" not in body.lower(), "Event handler XSS payload reflected in response"

@@ -12,10 +12,8 @@ Test count: 5
 """
 
 import pytest
-
 from deepeval import assert_test
 from deepeval.test_case import LLMTestCase
-
 
 pytestmark = [pytest.mark.llm, pytest.mark.slow]
 
@@ -23,16 +21,20 @@ pytestmark = [pytest.mark.llm, pytest.mark.slow]
 class TestSemanticFidelitySimple:
     """Test semantic fidelity on straightforward queries."""
 
-    @pytest.mark.parametrize("nl_query,sql_output", [
-        (
-            "Show me all products",
-            "SELECT * FROM products",
-        ),
-        (
-            "How many customers registered this year?",
-            "SELECT COUNT(*) FROM customers WHERE created_at >= DATE_TRUNC('year', CURRENT_DATE)",
-        ),
-    ], ids=["select-all", "temporal-count"])
+    @pytest.mark.parametrize(
+        ("nl_query", "sql_output"),
+        [
+            (
+                "Show me all products",
+                "SELECT * FROM products",
+            ),
+            (
+                "How many customers registered this year?",
+                "SELECT COUNT(*) FROM customers WHERE created_at >= DATE_TRUNC('year', CURRENT_DATE)",
+            ),
+        ],
+        ids=["select-all", "temporal-count"],
+    )
     def test_simple_fidelity(self, nl_query, sql_output, sql_fidelity_metric):
         """Simple NL→SQL should achieve high semantic fidelity."""
         test_case = LLMTestCase(

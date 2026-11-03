@@ -6,7 +6,7 @@ for end-to-end testing of the AskData web application.
 """
 
 import pytest
-from playwright.sync_api import Page, BrowserContext
+from playwright.sync_api import Page
 
 
 @pytest.fixture(scope="session")

@@ -7,7 +7,7 @@ Encapsulates interactions with the natural language input,
 submit button, and suggestion chips.
 """
 
-from playwright.sync_api import Page, expect
+from playwright.sync_api import Page
 
 
 class QueryPage:

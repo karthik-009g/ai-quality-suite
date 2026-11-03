@@ -14,7 +14,6 @@ from __future__ import annotations
 
 import os
 import time
-from typing import Optional
 
 from deepeval.models import DeepEvalBaseLLM
 from groq import Groq
@@ -32,7 +31,7 @@ class GroqJudge(DeepEvalBaseLLM):
     def __init__(
         self,
         model_name: str = "llama-3.3-70b-versatile",
-        api_key: Optional[str] = None,
+        api_key: str | None = None,
         max_retries: int = 3,
         retry_delay: float = 2.0,
     ):

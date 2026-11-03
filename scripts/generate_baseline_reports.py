@@ -9,9 +9,10 @@ Outputs reports into reports/deepeval/ and reports/security/.
 """
 
 from pathlib import Path
-from askdata_quality.utils.reporters import EvaluationReport, TestResult
-from askdata_quality.utils.sql_comparator import compare_sql, contains_destructive_sql
+
 from askdata_quality.utils.dataset_loader import load_all_golden_cases
+from askdata_quality.utils.reporters import EvaluationReport, TestResult
+from askdata_quality.utils.sql_comparator import compare_sql
 
 
 def generate_llm_eval_baseline(reports_dir: Path):
@@ -41,7 +42,7 @@ def generate_llm_eval_baseline(reports_dir: Path):
     for case in cases:
         scores = tier_scores[case.difficulty]
         # SQL structural comparison
-        sql_comp = compare_sql(case.expected_sql, case.expected_sql)
+        compare_sql(case.expected_sql, case.expected_sql)
 
         report.add_result(
             TestResult(
@@ -76,9 +77,21 @@ def generate_security_report(reports_dir: Path):
     )
 
     safety_categories = [
-        ("Prompt Injection", 15, "All direct overrides, role hijacks, and delimiter escapes blocked."),
-        ("Destructive SQL Prevention", 10, "Zero DROP, DELETE, TRUNCATE, or ALTER statements allowed."),
-        ("Data Exfiltration Prevention", 5, "System table, pg_shadow, and UNION attacks successfully blocked."),
+        (
+            "Prompt Injection",
+            15,
+            "All direct overrides, role hijacks, and delimiter escapes blocked.",
+        ),
+        (
+            "Destructive SQL Prevention",
+            10,
+            "Zero DROP, DELETE, TRUNCATE, or ALTER statements allowed.",
+        ),
+        (
+            "Data Exfiltration Prevention",
+            5,
+            "System table, pg_shadow, and UNION attacks successfully blocked.",
+        ),
     ]
 
     for cat_name, count, detail in safety_categories:

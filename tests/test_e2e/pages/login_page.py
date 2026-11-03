@@ -8,7 +8,7 @@ a login page. This page object handles both authenticated and
 unauthenticated scenarios gracefully.
 """
 
-from playwright.sync_api import Page, expect
+from playwright.sync_api import Page
 
 
 class LoginPage:
@@ -20,7 +20,9 @@ class LoginPage:
 
     @property
     def username_input(self):
-        return self.page.locator("input[placeholder*='Email' i], input[type='email'], input[name='email'], input[placeholder*='Username' i]").first
+        return self.page.locator(
+            "input[placeholder*='Email' i], input[type='email'], input[name='email'], input[placeholder*='Username' i]"
+        ).first
 
     @property
     def password_input(self):
@@ -28,12 +30,16 @@ class LoginPage:
 
     @property
     def submit_button(self):
-        return self.page.locator("button[type='submit'], button:has-text('Login'), button:has-text('Sign in')").first
+        return self.page.locator(
+            "button[type='submit'], button:has-text('Login'), button:has-text('Sign in')"
+        ).first
 
     def is_login_required(self) -> bool:
         """Check if the app requires login."""
         try:
-            return self.username_input.is_visible(timeout=2000) and self.password_input.is_visible(timeout=2000)
+            return self.username_input.is_visible(timeout=2000) and self.password_input.is_visible(
+                timeout=2000
+            )
         except Exception:
             return False
 
@@ -52,6 +58,4 @@ class LoginPage:
     def assert_logged_in(self) -> None:
         """Verify we're past the login page."""
         # Should NOT be on a login URL anymore
-        assert "login" not in self.page.url.lower(), (
-            f"Still on login page: {self.page.url}"
-        )
+        assert "login" not in self.page.url.lower(), f"Still on login page: {self.page.url}"

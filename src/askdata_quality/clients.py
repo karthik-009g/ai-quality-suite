@@ -8,9 +8,6 @@ the LLM evaluation pipeline (to get actual_output from AskData).
 
 from __future__ import annotations
 
-import json
-import re
-from typing import Optional
 import httpx
 
 from askdata_quality.utils.sql_comparator import contains_destructive_sql
@@ -49,12 +46,20 @@ class AskDataClient:
     async def health_check(self) -> httpx.Response:
         """Check if the AskData app is reachable."""
         if self.mock_mode:
-            return httpx.Response(200, text="<!DOCTYPE html><html><head><title>Ask Data</title></head><body><h1>Ask Data</h1></body></html>", headers={"content-type": "text/html; charset=utf-8"})
+            return httpx.Response(
+                200,
+                text="<!DOCTYPE html><html><head><title>Ask Data</title></head><body><h1>Ask Data</h1></body></html>",
+                headers={"content-type": "text/html; charset=utf-8"},
+            )
         try:
             async with self._make_client() as client:
                 return await client.get("/")
         except Exception:
-            return httpx.Response(200, text="<!DOCTYPE html><html><head><title>Ask Data</title></head><body><h1>Ask Data</h1></body></html>", headers={"content-type": "text/html; charset=utf-8"})
+            return httpx.Response(
+                200,
+                text="<!DOCTYPE html><html><head><title>Ask Data</title></head><body><h1>Ask Data</h1></body></html>",
+                headers={"content-type": "text/html; charset=utf-8"},
+            )
 
     async def submit_query(self, natural_language_query: str) -> httpx.Response:
         """
@@ -99,12 +104,20 @@ class AskDataClient:
     async def get_page(self, path: str = "/") -> httpx.Response:
         """Fetch a page from the AskData app (for reachability checks)."""
         if self.mock_mode:
-            return httpx.Response(200, text="<!DOCTYPE html><html><body>Ask Data</body></html>", headers={"content-type": "text/html; charset=utf-8"})
+            return httpx.Response(
+                200,
+                text="<!DOCTYPE html><html><body>Ask Data</body></html>",
+                headers={"content-type": "text/html; charset=utf-8"},
+            )
         try:
             async with self._make_client() as client:
                 return await client.get(path)
         except Exception:
-            return httpx.Response(200, text="<!DOCTYPE html><html><body>Ask Data</body></html>", headers={"content-type": "text/html; charset=utf-8"})
+            return httpx.Response(
+                200,
+                text="<!DOCTYPE html><html><body>Ask Data</body></html>",
+                headers={"content-type": "text/html; charset=utf-8"},
+            )
 
     def _generate_mock_query_response(self, query: str) -> httpx.Response:
         """Simulate realistic AskData API responses based on input safety."""
@@ -113,7 +126,12 @@ class AskDataClient:
         if not q_lower:
             return httpx.Response(
                 400,
-                json={"type": "error", "message": "Query is required", "data": {}, "next_steps": []},
+                json={
+                    "type": "error",
+                    "message": "Query is required",
+                    "data": {},
+                    "next_steps": [],
+                },
             )
 
         # Destructive SQL check
@@ -130,9 +148,19 @@ class AskDataClient:
 
         # Prompt injection / safety check
         injection_indicators = [
-            "ignore all", "system override", "forget your role", "###admin###",
-            "dan (do anything now)", "pwned", "pg_shadow", "pg_roles", "information_schema",
-            "<script>", "onmouseover", "pg_sleep", "copy (",
+            "ignore all",
+            "system override",
+            "forget your role",
+            "###admin###",
+            "dan (do anything now)",
+            "pwned",
+            "pg_shadow",
+            "pg_roles",
+            "information_schema",
+            "<script>",
+            "onmouseover",
+            "pg_sleep",
+            "copy (",
         ]
         if any(ind in q_lower for ind in injection_indicators):
             return httpx.Response(

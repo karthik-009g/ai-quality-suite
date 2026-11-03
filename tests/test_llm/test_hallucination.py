@@ -9,10 +9,8 @@ Test count: 5
 """
 
 import pytest
-
 from deepeval import assert_test
 from deepeval.test_case import LLMTestCase
-
 
 pytestmark = [pytest.mark.llm, pytest.mark.slow]
 
@@ -58,9 +56,7 @@ class TestHallucinationDetection:
         # We expect hallucination to be detected (score > threshold)
         hallucination_metric.measure(test_case)
         # A high hallucination score means hallucination was detected
-        assert hallucination_metric.score is not None, (
-            "Hallucination metric returned no score"
-        )
+        assert hallucination_metric.score is not None, "Hallucination metric returned no score"
 
     def test_detects_hallucinated_column(self, hallucination_metric):
         """Referencing non-existent columns should be flagged."""
