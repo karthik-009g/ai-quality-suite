@@ -1,0 +1,57 @@
+name: E2E — Playwright Browser Tests
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  PYTHON_VERSION: "3.11"
+  ASKDATA_BASE_URL: "https://ask-data-gilt.vercel.app"
+
+jobs:
+  e2e-tests:
+    name: 🎭 Playwright E2E Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -e ".[dev]"
+
+      - name: Install Playwright browsers
+        run: playwright install --with-deps chromium
+
+      - name: Run Playwright E2E tests
+        run: |
+          pytest tests/test_e2e/ -m e2e -v \
+            --tb=short \
+            --junit-xml=reports/e2e-results.xml \
+            --tracing=retain-on-failure \
+            --browser chromium
+        env:
+          ASKDATA_BASE_URL: ${{ env.ASKDATA_BASE_URL }}
+          PLAYWRIGHT_BROWSER: chromium
+          CI: "true"
+
+      - name: Upload E2E test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-results-${{ github.run_number }}
+          path: |
+            reports/e2e-results.xml
+            test-results/
+
+      - name: Upload Playwright traces
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-traces-${{ github.run_number }}
+          path: test-results/**/*.zip

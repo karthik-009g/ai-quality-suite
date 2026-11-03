@@ -1,0 +1,67 @@
+{
+  "version": "1.0.0",
+  "tier": 1,
+  "description": "Simple SELECT queries — single table, basic filters, no joins",
+  "cases": [
+    {
+      "id": "GD-001",
+      "category": "simple_select",
+      "difficulty": 1,
+      "natural_language": "Show me all products",
+      "expected_sql": "SELECT * FROM products",
+      "expected_columns": ["id", "name", "price", "category"],
+      "expected_row_count": {"min": 1, "max": 1000},
+      "tags": ["select", "all"],
+      "edge_case": false,
+      "description": "Basic select all from a single table"
+    },
+    {
+      "id": "GD-002",
+      "category": "simple_filter",
+      "difficulty": 1,
+      "natural_language": "Show me products that cost more than 50 dollars",
+      "expected_sql": "SELECT * FROM products WHERE price > 50",
+      "expected_columns": ["id", "name", "price", "category"],
+      "expected_row_count": {"min": 0, "max": 500},
+      "tags": ["select", "filter", "comparison"],
+      "edge_case": false,
+      "description": "Simple WHERE clause with numeric comparison"
+    },
+    {
+      "id": "GD-003",
+      "category": "simple_count",
+      "difficulty": 1,
+      "natural_language": "How many customers do we have?",
+      "expected_sql": "SELECT COUNT(*) FROM customers",
+      "expected_columns": ["count"],
+      "expected_row_count": {"min": 1, "max": 1},
+      "tags": ["count", "aggregate"],
+      "edge_case": false,
+      "description": "Simple count query"
+    },
+    {
+      "id": "GD-004",
+      "category": "simple_sort",
+      "difficulty": 1,
+      "natural_language": "List all orders sorted by date, most recent first",
+      "expected_sql": "SELECT * FROM orders ORDER BY order_date DESC",
+      "expected_columns": ["id", "customer_id", "order_date", "total"],
+      "expected_row_count": {"min": 1, "max": 5000},
+      "tags": ["select", "sort", "descending"],
+      "edge_case": false,
+      "description": "Simple ORDER BY with descending sort"
+    },
+    {
+      "id": "GD-005",
+      "category": "simple_limit",
+      "difficulty": 1,
+      "natural_language": "Show me the 10 most expensive products",
+      "expected_sql": "SELECT * FROM products ORDER BY price DESC LIMIT 10",
+      "expected_columns": ["id", "name", "price", "category"],
+      "expected_row_count": {"min": 1, "max": 10},
+      "tags": ["select", "sort", "limit", "top-n"],
+      "edge_case": false,
+      "description": "Top-N query with ORDER BY and LIMIT"
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "version": "1.0.0",
+  "tier": 4,
+  "description": "Advanced SQL — CTEs, window functions, subqueries, complex logic",
+  "cases": [
+    {
+      "id": "GD-016",
+      "category": "cte",
+      "difficulty": 4,
+      "natural_language": "Show me the running total of monthly revenue",
+      "expected_sql": "WITH monthly_revenue AS (SELECT DATE_TRUNC('month', o.order_date) AS month, SUM(oi.quantity * oi.unit_price) AS revenue FROM orders o JOIN order_items oi ON o.id = oi.order_id GROUP BY DATE_TRUNC('month', o.order_date)) SELECT month, revenue, SUM(revenue) OVER (ORDER BY month) AS running_total FROM monthly_revenue ORDER BY month",
+      "expected_columns": ["month", "revenue", "running_total"],
+      "expected_row_count": {"min": 1, "max": 120},
+      "tags": ["cte", "window_function", "running_total", "temporal"],
+      "edge_case": false,
+      "description": "CTE with window function for running total"
+    },
+    {
+      "id": "GD-017",
+      "category": "window_rank",
+      "difficulty": 4,
+      "natural_language": "Rank customers by total spending and show top 5",
+      "expected_sql": "WITH customer_spending AS (SELECT c.id, c.name, SUM(o.total) AS total_spent, RANK() OVER (ORDER BY SUM(o.total) DESC) AS spending_rank FROM customers c JOIN orders o ON c.id = o.customer_id GROUP BY c.id, c.name) SELECT name, total_spent, spending_rank FROM customer_spending WHERE spending_rank <= 5",
+      "expected_columns": ["name", "total_spent", "spending_rank"],
+      "expected_row_count": {"min": 1, "max": 5},
+      "tags": ["cte", "window_function", "rank", "top-n"],
+      "edge_case": false,
+      "description": "CTE with RANK window function and filter"
+    },
+    {
+      "id": "GD-018",
+      "category": "lag_lead",
+      "difficulty": 4,
+      "natural_language": "Show month-over-month revenue growth percentage",
+      "expected_sql": "WITH monthly AS (SELECT DATE_TRUNC('month', order_date) AS month, SUM(total) AS revenue FROM orders GROUP BY DATE_TRUNC('month', order_date)) SELECT month, revenue, LAG(revenue) OVER (ORDER BY month) AS prev_revenue, ROUND((revenue - LAG(revenue) OVER (ORDER BY month)) * 100.0 / LAG(revenue) OVER (ORDER BY month), 2) AS growth_pct FROM monthly ORDER BY month",
+      "expected_columns": ["month", "revenue", "prev_revenue", "growth_pct"],
+      "expected_row_count": {"min": 1, "max": 120},
+      "tags": ["cte", "window_function", "lag", "growth", "temporal"],
+      "edge_case": false,
+      "description": "LAG window function for period-over-period comparison"
+    },
+    {
+      "id": "GD-019",
+      "category": "correlated_subquery",
+      "difficulty": 4,
+      "natural_language": "Find products that are priced above the average in their category",
+      "expected_sql": "SELECT p.name, p.price, p.category FROM products p WHERE p.price > (SELECT AVG(p2.price) FROM products p2 WHERE p2.category = p.category)",
+      "expected_columns": ["name", "price", "category"],
+      "expected_row_count": {"min": 0, "max": 500},
+      "tags": ["correlated_subquery", "comparison", "category"],
+      "edge_case": false,
+      "description": "Correlated subquery comparing against category average"
+    },
+    {
+      "id": "GD-020",
+      "category": "multi_cte",
+      "difficulty": 4,
+      "natural_language": "Show customer segments: classify customers as High, Medium, or Low value based on their total spending compared to the average",
+      "expected_sql": "WITH customer_totals AS (SELECT c.id, c.name, SUM(o.total) AS total_spent FROM customers c JOIN orders o ON c.id = o.customer_id GROUP BY c.id, c.name), stats AS (SELECT AVG(total_spent) AS avg_spent, STDDEV(total_spent) AS std_spent FROM customer_totals) SELECT ct.name, ct.total_spent, CASE WHEN ct.total_spent > s.avg_spent + s.std_spent THEN 'High Value' WHEN ct.total_spent > s.avg_spent - s.std_spent THEN 'Medium Value' ELSE 'Low Value' END AS segment FROM customer_totals ct CROSS JOIN stats s ORDER BY ct.total_spent DESC",
+      "expected_columns": ["name", "total_spent", "segment"],
+      "expected_row_count": {"min": 1, "max": 1000},
+      "tags": ["multi_cte", "case", "segmentation", "statistics"],
+      "edge_case": false,
+      "description": "Multiple CTEs for customer segmentation"
+    }
+  ]
+}

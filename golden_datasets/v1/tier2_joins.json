@@ -1,0 +1,67 @@
+{
+  "version": "1.0.0",
+  "tier": 2,
+  "description": "JOIN queries — multi-table, basic filters across related tables",
+  "cases": [
+    {
+      "id": "GD-006",
+      "category": "inner_join",
+      "difficulty": 2,
+      "natural_language": "Show me all orders with customer names",
+      "expected_sql": "SELECT o.*, c.name AS customer_name FROM orders o JOIN customers c ON o.customer_id = c.id",
+      "expected_columns": ["id", "customer_id", "order_date", "total", "customer_name"],
+      "expected_row_count": {"min": 1, "max": 5000},
+      "tags": ["join", "inner_join"],
+      "edge_case": false,
+      "description": "Basic INNER JOIN between orders and customers"
+    },
+    {
+      "id": "GD-007",
+      "category": "left_join",
+      "difficulty": 2,
+      "natural_language": "Show all customers and their orders, including customers with no orders",
+      "expected_sql": "SELECT c.*, o.id AS order_id, o.total FROM customers c LEFT JOIN orders o ON c.id = o.customer_id",
+      "expected_columns": ["id", "name", "order_id", "total"],
+      "expected_row_count": {"min": 1, "max": 5000},
+      "tags": ["join", "left_join", "nullable"],
+      "edge_case": false,
+      "description": "LEFT JOIN to include customers without orders"
+    },
+    {
+      "id": "GD-008",
+      "category": "join_filter",
+      "difficulty": 2,
+      "natural_language": "Which customers bought products in the Electronics category?",
+      "expected_sql": "SELECT DISTINCT c.name FROM customers c JOIN orders o ON c.id = o.customer_id JOIN order_items oi ON o.id = oi.order_id JOIN products p ON oi.product_id = p.id WHERE p.category = 'Electronics'",
+      "expected_columns": ["name"],
+      "expected_row_count": {"min": 0, "max": 500},
+      "tags": ["join", "multi_join", "filter", "distinct"],
+      "edge_case": false,
+      "description": "Multi-table JOIN with category filter"
+    },
+    {
+      "id": "GD-009",
+      "category": "join_count",
+      "difficulty": 2,
+      "natural_language": "How many orders does each customer have?",
+      "expected_sql": "SELECT c.name, COUNT(o.id) AS order_count FROM customers c LEFT JOIN orders o ON c.id = o.customer_id GROUP BY c.name",
+      "expected_columns": ["name", "order_count"],
+      "expected_row_count": {"min": 1, "max": 1000},
+      "tags": ["join", "count", "group_by"],
+      "edge_case": false,
+      "description": "JOIN with GROUP BY and COUNT"
+    },
+    {
+      "id": "GD-010",
+      "category": "self_join",
+      "difficulty": 2,
+      "natural_language": "Find pairs of products in the same category",
+      "expected_sql": "SELECT p1.name AS product_1, p2.name AS product_2, p1.category FROM products p1 JOIN products p2 ON p1.category = p2.category AND p1.id < p2.id",
+      "expected_columns": ["product_1", "product_2", "category"],
+      "expected_row_count": {"min": 0, "max": 10000},
+      "tags": ["self_join", "pairs"],
+      "edge_case": false,
+      "description": "Self-join to find product pairs in same category"
+    }
+  ]
+}

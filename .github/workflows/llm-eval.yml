@@ -1,0 +1,68 @@
+name: LLM Evaluation — Nightly DeepEval
+
+on:
+  schedule:
+    # Run every night at 2:00 AM UTC
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+    inputs:
+      run_full:
+        description: "Run full evaluation (all tiers)"
+        required: false
+        default: "true"
+
+env:
+  PYTHON_VERSION: "3.11"
+  ASKDATA_BASE_URL: "https://ask-data-gilt.vercel.app"
+  ASKDATA_API_URL: "https://ask-data-gilt.vercel.app/api"
+
+jobs:
+  llm-evaluation:
+    name: 🧠 LLM Evaluation Suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -e ".[dev]"
+
+      - name: Run DeepEval LLM evaluation
+        run: |
+          pytest tests/test_llm/ -m llm -v \
+            --tb=short \
+            --junit-xml=reports/llm-eval-results.xml \
+            -x  # Stop on first failure for cost control
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GROQ_MODEL_NAME: "llama-3.3-70b-versatile"
+          ASKDATA_BASE_URL: ${{ env.ASKDATA_BASE_URL }}
+          ASKDATA_API_URL: ${{ env.ASKDATA_API_URL }}
+          CI: "true"
+
+      - name: Upload LLM evaluation results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: llm-eval-results-${{ github.run_number }}
+          path: |
+            reports/llm-eval-results.xml
+            reports/deepeval/
+
+      - name: Check evaluation thresholds
+        if: failure()
+        run: |
+          echo "🚨 LLM EVALUATION BELOW THRESHOLDS"
+          echo ""
+          echo "One or more metrics fell below minimum thresholds:"
+          echo "  - Answer Relevancy: ≥ 0.70"
+          echo "  - Faithfulness:     ≥ 0.80"
+          echo "  - Hallucination:    ≤ 0.50"
+          echo "  - SQL Fidelity:     ≥ 0.75"
+          echo ""
+          echo "Review the evaluation report in artifacts."

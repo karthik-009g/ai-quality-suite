@@ -1,0 +1,53 @@
+# =============================================================================
+# AskData Quality Suite .gitignore
+# =============================================================================
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+
+# --- Virtual Environment ---
+.venv/
+venv/
+env/
+
+# --- Environment & Secrets ---
+.env
+.env.local
+.env.*.local
+
+# --- Test Artifacts ---
+reports/deepeval/
+reports/playwright/
+reports/allure/
+reports/allure-results/
+.pytest_cache/
+htmlcov/
+.coverage
+coverage.xml
+
+# --- Playwright ---
+test-results/
+playwright-report/
+state.json
+*.trace.zip
+
+# --- IDE ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# --- Misc ---
+*.log
+*.tmp
